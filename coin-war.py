@@ -72,29 +72,32 @@ def battle(player1, player2):
 
 
 def battle_check():
+
     if not army1:
-        print("Player 1 has no army. Player 2 has won the war.")
-        return False
+        if not army2:
+            prison_count1 = 0
+            prison_count2 = 0
+            for current_unit in prison1:
+                if current_unit == "1":
+                    prison_count1 += 1
+            for current_unit in prison2:
+                if current_unit == "1":
+                    prison_count2 += 1
+            if prison_count1 == prison_count2:
+                print("No armies, the war is a DRAW?!?")
+                return False
+            elif prison_count1 > prison_count2:
+                print("Player 1 wins! Player 2 has a lesser prisoner count.")
+                return False
+            elif prison_count2 > prison_count1:
+                print("Player 2 Wins! Player 1 has a lesser prisoner count.")
+                return False
+
+        else:
+            print("Player 1 has no army. Player 2 has won the war.")
+            return False
     if not army2:
-        print("Player 2 has no army. Player 1 has won the war.")
-        return False
-    if not army1 and army2:
-        prison_count1 = 0
-        prison_count2 = 0
-        for i in army1:
-            if prison1[i] == 1:
-                prison_count1 += 1
-        for j in army2:
-            if prison2[j] == 1:
-                prison_count2 += 1
-        if prison_count1 == prison_count2:
-            print("No armies, the war is a DRAW?!?")
-            return False
-        elif prison_count1 > prison_count2:
-            print("Player 1 wins! Player 2 has a lesser prisoner count.")
-            return False
-        elif prison_count2 > prison_count1:
-            print("Player 2 Wins! Player 1 has a lesser prisoner count.")
+            print("Player 2 has no army. Player 1 has won the war.")
             return False
     else:
         return True
@@ -113,7 +116,7 @@ def war():
         print("Result of Round " + str(current_round) + ": " + battle(army1, army2) + ".")
         print()
         current_round += 1
-        
+
     else:
         print()
         print("GAME OVER!")
@@ -134,7 +137,7 @@ def war_prep():
     print("Prepare for WAR!! Pick 5 troops must be 5 units long and contain either H's T's or both.")
     troops1 += str(input("Player 1 troop selection? "))
     troops2 += str(input("Player 2 troop selection? "))
-    
+
     if not troops1:
         troops1 = generate_army()
     if not troops2:
@@ -142,7 +145,7 @@ def war_prep():
     if len(troops1) != 5 or len(troops2) != 5:
         print("Army Selection Error: Each army must have 5 units or be left blank for random selection.")
         war_prep()
-        
+
     index = 0  # initialize troop index for first troop conversion
     for current_troop in troops1:
         # convert troops from h or H to 1
@@ -161,9 +164,9 @@ def war_prep():
         # convert troops from t or T to 2
         if current_troop == "T" or current_troop == "t":
             troops2[index] = "2"
-            
+
         index += 1  # increments index
-            
+
     army1 = troops1
     army2 = troops2
 
